@@ -13,10 +13,10 @@ public interface HolderDao {
     List<Holder> readHolders();
 
     /**
-     * @param todoItem
-     * @return whether the todoItem was persisted.
+     * @param holder
+     * @return whether the holder was persisted.
      */
-    Holder createHolder(Holder todoItem);
+    Holder createHolder(Holder holder);
 
     /**
      * @param id

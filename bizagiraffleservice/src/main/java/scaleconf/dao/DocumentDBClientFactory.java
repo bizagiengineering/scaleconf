@@ -14,7 +14,7 @@ public class DocumentDBClientFactory {
 
     private static DocumentClient documentClient = new DocumentClient(HOST, MASTER_KEY,
             ConnectionPolicy.GetDefault(), ConsistencyLevel.Session);
-    
+
     public static DocumentClient getDocumentClient() {
         return documentClient;
     }
