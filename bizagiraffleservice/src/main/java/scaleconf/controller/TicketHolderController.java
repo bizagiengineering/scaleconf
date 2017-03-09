@@ -13,10 +13,10 @@ import scaleconf.dao.HolderDao;
 public class TicketHolderController {
 
     @RequestMapping("/api/holder")
-    public String saveHolder() {
+    public Holder saveHolder() {
         HolderDao holderDao=new HolderDDBDao();
         Holder holder=new Holder("Camilo","http://url","http://document");
-        holderDao.createHolder(holder);
-        return "Hello World";
+        holder=holderDao.createHolder(holder);
+        return holder;
     }
 }
