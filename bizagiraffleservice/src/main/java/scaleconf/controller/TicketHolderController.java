@@ -32,7 +32,7 @@ public class TicketHolderController {
             holder = holderDao.createHolder(holder);
             return holder;
         } catch (HolderDaoException e) {
-            throw new RuntimeException("There is a problem with inserting the holder");
+            throw new RuntimeException("There is a problem inserting the holder");
         }
     }
 
