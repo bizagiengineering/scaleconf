@@ -17,6 +17,6 @@ RUN update-java-alternatives -s java-8-oracle
 # Setting Java environment variables
 RUN apt-get install oracle-java8-set-default
 
-COPY target/lcddisplay-1.0-SNAPSHOT.jar /home/lcddisplay-1.0-SNAPSHOT.jar
+COPY target/bizagiraffleservice-1.0-SNAPSHOT.jar /home/bizagiraffleservice-1.0-SNAPSHOT.jar
 
 CMD ["java","-jar","/home/bizagiraffleservice-1.0-SNAPSHOT.jar"]

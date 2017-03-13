@@ -7,7 +7,6 @@ package scaleconf.dao;
 import com.google.gson.Gson;
 import com.microsoft.azure.documentdb.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,7 +33,7 @@ public class HolderDDBDao implements HolderDao{
     private static DocumentCollection collectionCache;
 
     @Override
-    public Holder createHolder(Holder todoItem) {
+    public Holder createHolder(Holder todoItem) throws HolderDaoException {
         // Serialize the Holder as a JSON Document.
         Document holderDocument = new Document(gson.toJson(todoItem));
 
@@ -45,90 +44,18 @@ public class HolderDDBDao implements HolderDao{
         try {
             // Persist the document using the DocumentClient.
             holderDocument = documentClient.createDocument(
-                    getTodoCollection().getSelfLink(), holderDocument, null,
+                    getHolderCollection().getSelfLink(), holderDocument, null,
                     false).getResource();
         } catch (DocumentClientException e) {
-            e.printStackTrace();
-            return null;
+           throw new HolderDaoException(e);
         }
 
         return gson.fromJson(holderDocument.toString(), Holder.class);
     }
 
-    @Override
-    public Holder readHolder(String id) {
-        // Retrieve the document by id using our helper method.
-        Document holderDocument = getDocumentById(id);
 
-        if (holderDocument != null) {
-            // De-serialize the document in to a Holder.
-            return gson.fromJson(holderDocument.toString(), Holder.class);
-        } else {
-            return null;
-        }
-    }
 
-    @Override
-    public List<Holder> readHolders() {
-        List<Holder> todoItems = new ArrayList<Holder>();
-
-        // Retrieve the Holder documents
-        List<Document> documentList = documentClient
-                .queryDocuments(getTodoCollection().getSelfLink(),
-                        "SELECT * FROM root r WHERE r.entityType = 'todoItem'",
-                        null).getQueryIterable().toList();
-
-        // De-serialize the documents in to Holders.
-        for (Document holderDocument : documentList) {
-            todoItems.add(gson.fromJson(holderDocument.toString(),
-                    Holder.class));
-        }
-
-        return todoItems;
-    }
-
-    @Override
-    public Holder updateHolder(String id, boolean isComplete) {
-        // Retrieve the document from the database
-        Document holderDocument = getDocumentById(id);
-
-        // You can update the document as a JSON document directly.
-        // For more complex operations - you could de-serialize the document in
-        // to a POJO, update the POJO, and then re-serialize the POJO back in to
-        // a document.
-        holderDocument.set("complete", isComplete);
-
-        try {
-            // Persist/replace the updated document.
-            holderDocument = documentClient.replaceDocument(holderDocument,
-                    null).getResource();
-        } catch (DocumentClientException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        return gson.fromJson(holderDocument.toString(), Holder.class);
-    }
-
-    @Override
-    public boolean deleteHolder(String id) {
-        // DocumentDB refers to documents by self link rather than id.
-
-        // Query for the document to retrieve the self link.
-        Document holderDocument = getDocumentById(id);
-
-        try {
-            // Delete the document by self link.
-            documentClient.deleteDocument(holderDocument.getSelfLink(), null);
-        } catch (DocumentClientException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;
-    }
-
-    private Database getTodoDatabase() {
+    private Database getTodoDatabase() throws HolderDaoException {
         if (databaseCache == null) {
             // Get the database if it exists
             List<Database> databaseList = documentClient
@@ -149,10 +76,10 @@ public class HolderDDBDao implements HolderDao{
                     databaseCache = documentClient.createDatabase(
                             databaseDefinition, null).getResource();
                 } catch (DocumentClientException e) {
-                    // TODO: Something has gone terribly wrong - the app wasn't
+                    // Something has gone terribly wrong - the app wasn't
                     // able to query or create the collection.
                     // Verify your connection, endpoint, and key.
-                    e.printStackTrace();
+                    throw new HolderDaoException(e);
                 }
             }
         }
@@ -160,7 +87,7 @@ public class HolderDDBDao implements HolderDao{
         return databaseCache;
     }
 
-    private DocumentCollection getTodoCollection() {
+    private DocumentCollection getHolderCollection() throws HolderDaoException {
         if (collectionCache == null) {
             // Get the collection if it exists.
             List<DocumentCollection> collectionList = documentClient
@@ -183,10 +110,9 @@ public class HolderDDBDao implements HolderDao{
                             getTodoDatabase().getSelfLink(),
                             collectionDefinition, null).getResource();
                 } catch (DocumentClientException e) {
-                    // TODO: Something has gone terribly wrong - the app wasn't
                     // able to query or create the collection.
                     // Verify your connection, endpoint, and key.
-                    e.printStackTrace();
+                   throw new HolderDaoException(e);
                 }
             }
         }
@@ -194,18 +120,5 @@ public class HolderDDBDao implements HolderDao{
         return collectionCache;
     }
 
-    private Document getDocumentById(String id) {
-        // Retrieve the document using the DocumentClient.
-        List<Document> documentList = documentClient
-                .queryDocuments(getTodoCollection().getSelfLink(),
-                        "SELECT * FROM root r WHERE r.id='" + id + "'", null)
-                .getQueryIterable().toList();
-
-        if (documentList.size() > 0) {
-            return documentList.get(0);
-        } else {
-            return null;
-        }
-    }
 
 }
