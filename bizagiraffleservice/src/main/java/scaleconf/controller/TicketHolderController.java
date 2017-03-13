@@ -12,6 +12,7 @@ import scaleconf.dao.Holder;
 import scaleconf.dao.HolderDDBDao;
 import scaleconf.dao.HolderDao;
 import com.microsoft.azure.storage.*;
+import scaleconf.model.CV;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -25,15 +26,16 @@ public class TicketHolderController {
 
     @RequestMapping("/api/holder")
     public Holder saveHolder() {
-        HolderDao holderDao=new HolderDDBDao();
-        Holder holder=new Holder("Camilo","http://url","http://document");
-        holder=holderDao.createHolder(holder);
+        HolderDao holderDao = new HolderDDBDao();
+        Holder holder = new Holder("Camilo", "http://url", "http://document");
+        holder = holderDao.createHolder(holder);
         return holder;
     }
 
     @PostMapping("/api/cv")
-    public String uploadCV(@RequestParam("cv") MultipartFile file) {
-        return uploadFile(createContainer("DefaultEndpointsProtocol=http;AccountName=scaleconf;AccountKey=Zl9MhlM/iiAiyIKdvqJvX3x3tWIEM0P5VfxYqRuQJbgxM7JMFlYnvOqq0YoWHLMSdwC36R/ogbqwcsk36ajDEw=="), file);
+    public CV uploadCV(@RequestParam("cv") MultipartFile file) {
+        String url = uploadFile(createContainer("DefaultEndpointsProtocol=http;AccountName=scaleconf;AccountKey=Zl9MhlM/iiAiyIKdvqJvX3x3tWIEM0P5VfxYqRuQJbgxM7JMFlYnvOqq0YoWHLMSdwC36R/ogbqwcsk36ajDEw=="), file);
+        return new CV(url);
     }
 
     private CloudBlobContainer createContainer(String connection) {
