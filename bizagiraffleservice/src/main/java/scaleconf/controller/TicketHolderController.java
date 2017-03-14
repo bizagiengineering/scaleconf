@@ -5,6 +5,7 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +25,11 @@ import java.net.URISyntaxException;
  */
 @RestController
 public class TicketHolderController {
+
+    @GetMapping("/api/ping")
+    public String ping() {
+        return "ping";
+    }
 
     @PostMapping("/api/holder")
     public Holder saveHolder() {
