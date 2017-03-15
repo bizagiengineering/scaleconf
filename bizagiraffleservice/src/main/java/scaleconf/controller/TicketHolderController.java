@@ -5,10 +5,7 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import scaleconf.dao.Holder;
 import scaleconf.dao.HolderDDBDao;
@@ -32,10 +29,16 @@ public class TicketHolderController {
     }
 
     @PostMapping("/api/holder")
-    public Holder saveHolder() {
+    public Holder saveHolder(@RequestParam("name") String name,
+                             @RequestParam("email") String email,
+                             @RequestParam("linkedinUrl") String linkedinURL,
+                             @RequestParam("documentUrl") String documentUrl) {
         try {
+            if(name==null||email==null||linkedinURL==null||documentUrl==null){
+                throw new IllegalArgumentException();
+            }
             HolderDao holderDao = new HolderDDBDao();
-            Holder holder = new Holder("Camilo", "camiloahm@gmai", "http://url", "http://document");
+            Holder holder = new Holder(name, email, linkedinURL, documentUrl);
             holder = holderDao.createHolder(holder);
             return holder;
         } catch (HolderDaoException e) {
@@ -45,7 +48,7 @@ public class TicketHolderController {
 
     @PostMapping("/api/cv")
     public CV uploadCV(@RequestParam("cv") MultipartFile file) {
-        if(file==null)
+        if (file == null)
             throw new IllegalArgumentException("File is required");
 
         String url = uploadFile(createContainer("DefaultEndpointsProtocol=http;AccountName=scaleconf;AccountKey=Zl9MhlM/iiAiyIKdvqJvX3x3tWIEM0P5VfxYqRuQJbgxM7JMFlYnvOqq0YoWHLMSdwC36R/ogbqwcsk36ajDEw=="), file);
