@@ -27,6 +27,10 @@ body {
 	font-family: "Open Sans", sans-serif;
 }
 
+a{
+    text-decoration: none;
+}
+
 
 /* Global
    ========================================================================== */
@@ -89,11 +93,11 @@ body {
     border: 0;
 }
 
-
-/* Forms
+/* Sections
    ========================================================================== */
 
-.bz-form {
+.main-section,
+.response-section{
     width: 96%;
     max-width: 400px;
     padding: 2rem 3rem;
@@ -102,6 +106,17 @@ body {
     border-radius: 5px;
     box-shadow: -5px 10px 30px rgba(0, 0, 0, 0.15);
 }
+
+.response-section{
+    display: none;
+}
+
+.response-section__element--center{
+    text-align: center;
+}
+
+/* Forms
+   ========================================================================== */
 
 .bz-form__element {
     margin-bottom: 1.9rem;
@@ -187,7 +202,8 @@ input[type='file']{
     .bz-logo {
         margin: 2rem auto 3rem;
     }
-    .bz-form {
+    .main-section,
+    .response-section {
         margin: 3rem auto 8rem;
         padding: 3rem 4rem;
     }

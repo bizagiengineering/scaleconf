@@ -126,15 +126,46 @@ particlesJS("particles-js", {
     });
 })();
 
-
-function formValidate(){
-    // Just validate file input
-    var cv = document.getElementById("cv");
-    var form = document.getElementsByName("form");
-
-    if(cv.files.length > 0){
-        form[0].submit();
-    }else{
-        return false;
+function getQueryString(url) {
+    var params = {};
+    url = url || window.location.href;
+    var query = url.indexOf("?") > 0 ? url.substring(url.indexOf("?") + 1) : "";
+    var pairs = query.split("&");
+    for (var i = pairs.length - 1; i >= 0; i--) {
+        var pos = pairs[i].indexOf('=');
+        if (pos == -1)
+            continue;
+        var argname = pairs[i].substring(0, pos);
+        var value = pairs[i].substring(pos + 1);
+        params[argname] = unescape(value);
     }
+    return params;
+}
+
+function checkStatus(){
+    return;
+
+    // TODO: Finish this function
+    /*var qs = getQueryString();
+    var actions= {
+        "200":{
+            message:""
+        }
+    };
+    var message= "";
+    var buttonDisplay = "";
+    if(qs.status == 200){
+        var mainSection = document.getElementsByClassName("main-section");
+        var responseSection = document.getElementsByClassName("response-section");
+
+        mainSection[0].style.visibility = "hidden";
+        responseSection[0].style.visibility = "visible";
+
+        message = "Thank you, all your data has been saved!";
+        buttonDisplay = "Come Back!";
+    }else{
+        message = "Something went wrong, please check your information and try again";
+        buttonDisplay = "Verify my information";
+        window.history.back();
+    }*/
 }

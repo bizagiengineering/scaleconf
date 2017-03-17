@@ -17,7 +17,7 @@
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 </head>
-<body>
+<body onload="checkStatus()">
     <!-- particles.js container -->
     <div id="particles-js"></div>
 
@@ -28,7 +28,7 @@
     </header>
 
     <section class="main-section">
-        <form class="bz-form" action="api/holder" onSubmit="return formValidate()" enctype="multipart/form-data" method="post">
+        <form class="bz-form" action="api/holder" enctype="multipart/form-data" method="post">
             <div class="bz-form__element">
                 <label class="bz-label">Your name</label>
                 <input class="bz-input" type="text" name="name" placeholder="" required="true" >
@@ -58,8 +58,11 @@
             </div>
         </form>
     </section>
+    <section class="response-section response-section__element--center">
+        <label class=""></label>
+        <a href="index.html" class="bz-button">Come Back!</a>
+    </section>
 
-    <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/vendor/particles.min.js"></script>
     <script src="js/main.js"></script>
 </body>
