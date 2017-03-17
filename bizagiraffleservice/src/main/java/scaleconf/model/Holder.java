@@ -9,14 +9,16 @@ public class Holder {
     private String email;
     private String profileUrl;
     private String documentUrl;
+    private Integer code;
 
     public Holder(){}
 
-    public Holder(String name,String email, String profileUrl, String documentUrl) {
+    public Holder(String name,String email, String profileUrl, String documentUrl,Integer code) {
         this.name = name;
         this.email=email;
         this.profileUrl = profileUrl;
         this.documentUrl = documentUrl;
+        this.code=code;
     }
 
     public String getName() {
@@ -33,5 +35,9 @@ public class Holder {
 
     public String getDocumentUrl() {
         return documentUrl;
+    }
+
+    public Integer getCode() {
+        return code;
     }
 }

@@ -5,13 +5,17 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import scaleconf.model.Holder;
 import scaleconf.dao.HolderDDBDao;
 import scaleconf.dao.HolderDao;
 import scaleconf.dao.HolderDaoException;
-import scaleconf.model.CV;
+import scaleconf.model.Holder;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -23,6 +27,9 @@ import java.net.URISyntaxException;
 @RestController
 public class HolderController {
 
+    @Autowired
+    private Environment environment;
+
     @GetMapping("/api/ping")
     public String ping() {
         return "ping";
@@ -32,31 +39,27 @@ public class HolderController {
     public Holder saveHolder(@RequestPart String name,
                              @RequestPart String email,
                              @RequestPart String profileUrl,
+                             @RequestPart String code,
                              @RequestPart MultipartFile file) {
         try {
             if (name == null ||
                     email == null ||
                     profileUrl == null ||
-                    file==null){
+                    file == null ||
+                    code == null) {
                 throw new IllegalArgumentException();
             }
-            String documentUrl = uploadFile(createContainer("DefaultEndpointsProtocol=http;AccountName=scaleconf;AccountKey=Zl9MhlM/iiAiyIKdvqJvX3x3tWIEM0P5VfxYqRuQJbgxM7JMFlYnvOqq0YoWHLMSdwC36R/ogbqwcsk36ajDEw=="), file);
+            //String blobKey = environment.getProperty("blobKey");
+            String blobKey="DefaultEndpointsProtocol=http;AccountName=scaleconf;AccountKey=Zl9MhlM/iiAiyIKdvqJvX3x3tWIEM0P5VfxYqRuQJbgxM7JMFlYnvOqq0YoWHLMSdwC36R/ogbqwcsk36ajDEw==";
+
+            String documentUrl = uploadFile(createContainer(blobKey), file);
             HolderDao holderDao = new HolderDDBDao();
-            Holder holder=new Holder(name,email,profileUrl,documentUrl);
+            Holder holder = new Holder(name, email, profileUrl, documentUrl,Integer.valueOf(code));
             holder = holderDao.createHolder(holder);
             return holder;
         } catch (HolderDaoException e) {
             throw new RuntimeException("There is a problem inserting the holder");
         }
-    }
-
-    @PostMapping("/api/cv")
-    public CV uploadCV(@RequestParam("cv") MultipartFile file) {
-        if (file == null)
-            throw new IllegalArgumentException("File is required");
-
-        String url = uploadFile(createContainer("DefaultEndpointsProtocol=http;AccountName=scaleconf;AccountKey=Zl9MhlM/iiAiyIKdvqJvX3x3tWIEM0P5VfxYqRuQJbgxM7JMFlYnvOqq0YoWHLMSdwC36R/ogbqwcsk36ajDEw=="), file);
-        return new CV(url);
     }
 
     private CloudBlobContainer createContainer(String connection) {
