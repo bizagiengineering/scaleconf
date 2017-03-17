@@ -28,18 +28,18 @@
     </header>
 
     <section class="main-section">
-        <form class="bz-form" action="api/holder" enctype="multipart/form-data" method="post">
+        <form class="bz-form" action="http://13.77.103.207:8080/api/holder" enctype="multipart/form-data" method="post">
             <div class="bz-form__element">
                 <label class="bz-label">Your name</label>
                 <input class="bz-input" type="text" name="name" placeholder="" required="true" >
             </div>
             <div class="bz-form__element">
                 <label class="bz-label"> E-mail Address</label>
-                <input class="bz-input" type="email" name="mail" placeholder="" required="true">
+                <input class="bz-input" type="email" name="email" placeholder="" required="true">
             </div>
             <div class="bz-form__element">
                 <label class="bz-label">Linked in profile URL</label>
-                <input class="bz-input" type="url" name="url" placeholder="https://www.linkedin.com/yourProfile/" required="true">
+                <input class="bz-input" type="url" name="profileUrl" placeholder="https://www.linkedin.com/yourProfile/" required="true">
             </div>
             <div class="bz-form__element bz-form__element--center">
                 <input type="file" name="cv" id="cv" required="true"/>
@@ -47,7 +47,7 @@
             </div>
             <div class="bz-form__element">
                 <label class="bz-label">Insert your code</label>
-                <input class="bz-input bz-input--code" type="text" placeholder="" required="true">
+                <input class="bz-input bz-input--code" type="text" name="code" placeholder="" required="true">
             </div>
             <div class="bz-form__element bz-form__element--center">
                 <label class="bz-check">
