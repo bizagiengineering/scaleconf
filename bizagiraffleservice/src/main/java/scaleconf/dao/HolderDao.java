@@ -1,5 +1,7 @@
 package scaleconf.dao;
 
+import scaleconf.model.Holder;
+
 /**
  * Created by dev-camiloh on 3/7/17.
  */

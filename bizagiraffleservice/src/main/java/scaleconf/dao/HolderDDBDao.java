@@ -6,6 +6,7 @@ package scaleconf.dao;
 
 import com.google.gson.Gson;
 import com.microsoft.azure.documentdb.*;
+import scaleconf.model.Holder;
 
 import java.util.List;
 
