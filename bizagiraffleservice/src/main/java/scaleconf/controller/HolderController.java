@@ -21,7 +21,7 @@ import java.net.URISyntaxException;
  * Created by dev-camiloh on 3/6/17.
  */
 @RestController
-public class TicketHolderController {
+public class HolderController {
 
     @GetMapping("/api/ping")
     public String ping() {
