@@ -5,12 +5,9 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import scaleconf.dao.Holder;
+import scaleconf.model.Holder;
 import scaleconf.dao.HolderDDBDao;
 import scaleconf.dao.HolderDao;
 import scaleconf.dao.HolderDaoException;
@@ -24,7 +21,7 @@ import java.net.URISyntaxException;
  * Created by dev-camiloh on 3/6/17.
  */
 @RestController
-public class TicketHolderController {
+public class HolderController {
 
     @GetMapping("/api/ping")
     public String ping() {
@@ -32,10 +29,20 @@ public class TicketHolderController {
     }
 
     @PostMapping("/api/holder")
-    public Holder saveHolder() {
+    public Holder saveHolder(@RequestPart String name,
+                             @RequestPart String email,
+                             @RequestPart String profileUrl,
+                             @RequestPart MultipartFile file) {
         try {
+            if (name == null ||
+                    email == null ||
+                    profileUrl == null ||
+                    file==null){
+                throw new IllegalArgumentException();
+            }
+            String documentUrl = uploadFile(createContainer("DefaultEndpointsProtocol=http;AccountName=scaleconf;AccountKey=Zl9MhlM/iiAiyIKdvqJvX3x3tWIEM0P5VfxYqRuQJbgxM7JMFlYnvOqq0YoWHLMSdwC36R/ogbqwcsk36ajDEw=="), file);
             HolderDao holderDao = new HolderDDBDao();
-            Holder holder = new Holder("Camilo", "camiloahm@gmai", "http://url", "http://document");
+            Holder holder=new Holder(name,email,profileUrl,documentUrl);
             holder = holderDao.createHolder(holder);
             return holder;
         } catch (HolderDaoException e) {
@@ -45,7 +52,7 @@ public class TicketHolderController {
 
     @PostMapping("/api/cv")
     public CV uploadCV(@RequestParam("cv") MultipartFile file) {
-        if(file==null)
+        if (file == null)
             throw new IllegalArgumentException("File is required");
 
         String url = uploadFile(createContainer("DefaultEndpointsProtocol=http;AccountName=scaleconf;AccountKey=Zl9MhlM/iiAiyIKdvqJvX3x3tWIEM0P5VfxYqRuQJbgxM7JMFlYnvOqq0YoWHLMSdwC36R/ogbqwcsk36ajDEw=="), file);

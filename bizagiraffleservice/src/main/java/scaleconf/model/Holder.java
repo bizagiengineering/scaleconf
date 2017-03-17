@@ -6,13 +6,32 @@ package scaleconf.model;
 public class Holder {
 
     private String name;
-    private String linkedinUrl;
+    private String email;
+    private String profileUrl;
+    private String documentUrl;
+
+    public Holder(){}
+
+    public Holder(String name,String email, String profileUrl, String documentUrl) {
+        this.name = name;
+        this.email=email;
+        this.profileUrl = profileUrl;
+        this.documentUrl = documentUrl;
+    }
 
     public String getName() {
         return name;
     }
 
-    public String getLinkedinUrl() {
-        return linkedinUrl;
+    public String getEmail() {
+        return email;
+    }
+
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    public String getDocumentUrl() {
+        return documentUrl;
     }
 }
