@@ -7,7 +7,7 @@
     <meta name="author" content="Bizagi Engineering">
     <link rel="icon" href="img/favicon.ico">
 
-    <title>Be part of bizagi</title>
+    <title>Bizagi Scaleconf</title>
     <!-- Bootstrap core CSS -->
     <link href="css/normalize.css" rel="stylesheet">
     <!-- Custom styles for this template -->
@@ -28,7 +28,7 @@
     </header>
 
     <section class="main-section">
-        <form class="bz-form" action="http://13.77.103.207:8080/api/holder" enctype="multipart/form-data" method="post">
+        <form class="bz-form" action="http://localhost:8080/api/holder" enctype="multipart/form-data" method="post">
             <div class="bz-form__element">
                 <label class="bz-label">Your name</label>
                 <input class="bz-input" type="text" name="name" placeholder="" required="true" >
@@ -42,8 +42,8 @@
                 <input class="bz-input" type="url" name="profileUrl" placeholder="https://www.linkedin.com/yourProfile/" required="true">
             </div>
             <div class="bz-form__element bz-form__element--center">
-                <input type="file" name="cv" id="cv" required="true"/>
-                <label for="cv" class="bz-button" id="cv-label">Upload your CV</label>
+                <input type="file" name="file" id="file" required="true"/>
+                <label for="file" class="bz-button" id="cv-label">Upload your CV</label>
             </div>
             <div class="bz-form__element">
                 <label class="bz-label">Insert your code</label>

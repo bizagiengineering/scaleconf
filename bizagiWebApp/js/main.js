@@ -116,7 +116,7 @@ particlesJS("particles-js", {
  * File inputs controller
  */
 (function () {
-    var fileInput = document.getElementById("cv");
+    var fileInput = document.getElementById("file");
     fileInput.addEventListener("change", function (e) {
         var inputValue = e.target.value;
         var fileName = (inputValue)? e.target.value.split( '\\' ).pop() : "Upload your CV";
