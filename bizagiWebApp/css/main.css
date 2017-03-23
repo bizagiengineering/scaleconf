@@ -108,7 +108,7 @@ a{
 }
 
 .response-section{
-    display: none;
+    visibility: hidden;
 }
 
 .response-section__element--center{
